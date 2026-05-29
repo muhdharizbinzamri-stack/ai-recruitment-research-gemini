@@ -1,341 +1,675 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI & Human Recruitment | Group 3</title>
+    <title>UniKL Research Exhibition Portal - Group 3</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        /* Loading Spinner CSS */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #2563eb;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
+        body {
+            font-family: 'Inter', sans-serif;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .active-tab {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            background-color: #f5f3ff;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
 
-    <div id="loadingScreen" class="fixed inset-0 bg-white/90 z-[100] hidden flex-col items-center justify-center backdrop-blur-sm transition-opacity">
-        <div class="loader mb-4"></div>
-        <h3 class="text-xl font-semibold text-blue-900">Authenticating...</h3>
-        <p class="text-gray-500 mt-2 text-sm">Please wait while we log you in securely.</p>
-    </div>
-
-    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div>
-                        <span class="font-bold text-xl text-gray-900 block leading-tight">UniKL Business School</span>
-                        <span class="text-xs text-blue-600 font-semibold tracking-wider uppercase">Group 3 (L08)</span>
-                    </div>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-extrabold px-3 py-1.5 rounded-lg text-lg tracking-wider shadow-sm flex items-center justify-center">
+                    UniKL
                 </div>
-                
-                <div class="hidden lg:flex space-x-8 items-center">
-                    <a href="#abstract" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors">Abstract</a>
-                    <a href="#problem" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors">Problem & Objectives</a>
-                    <a href="#literature" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors">Literature & Framework</a>
-                    <a href="#methodology" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors">Methodology</a>
-                    
-                    <button onclick="handleSignIn()" id="signInBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-medium text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                        <i class="fas fa-user-circle"></i> Sign In
-                    </button>
+                <div class="hidden sm:block h-6 w-px bg-gray-300"></div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-gray-900 tracking-tight leading-none">BUSINESS SCHOOL</span>
+                    <span class="text-xs text-indigo-600 font-medium tracking-wider mt-0.5">EIB20503 RESEARCH METHODOLOGY</span>
                 </div>
             </div>
-        </div>
-    </nav>
 
-    <header class="relative bg-blue-900 overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10 text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-blue-800 text-blue-200 text-xs font-semibold uppercase tracking-wider mb-6 border border-blue-700">
-                Research Proposal Exhibition
-            </span>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-8 drop-shadow-sm">
-                Investigating the Role of AI and Humans Across Recruitment Stages
-            </h1>
-            <p class="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed font-light">
-                A Case Study in Malaysia examining how technical efficiency and human social judgment complement one another in modern talent acquisition.
-            </p>
+            <nav class="hidden md:flex space-x-1 bg-gray-100 p-1 rounded-xl">
+                <button onclick="switchView('proposal')" id="btn-proposal" class="view-tab px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 text-gray-700 hover:text-gray-900 active-tab">
+                    Research Proposal
+                </button>
+                <button onclick="switchView('poster')" id="btn-poster" class="view-tab px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 text-gray-500 hover:text-gray-900">
+                    Academic Poster
+                </button>
+                <button onclick="switchView('flyer')" id="btn-flyer" class="view-tab px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 text-gray-500 hover:text-gray-900">
+                    Promotional Flyer
+                </button>
+            </nav>
+
+            <div id="auth-zone">
+                <button onclick="openModal()" class="inline-flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                    <span>Sign In</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="md:hidden flex border-t border-gray-200 justify-around bg-gray-50 p-2">
+            <button onclick="switchView('proposal')" class="view-tab-mobile text-xs font-semibold px-3 py-1.5 rounded-md text-indigo-600 bg-indigo-50">Proposal</button>
+            <button onclick="switchView('poster')" class="view-tab-mobile text-xs font-semibold px-3 py-1.5 rounded-md text-gray-600">Poster</button>
+            <button onclick="switchView('flyer')" class="view-tab-mobile text-xs font-semibold px-3 py-1.5 rounded-md text-gray-600">Flyer</button>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <section id="abstract" class="scroll-mt-24">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 text-xl">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-gray-900">Abstract</h2>
-                </div>
-                <div class="prose prose-lg text-gray-600 max-w-none space-y-6">
-                    <p>
-                        Artificial Intelligence (AI) is fundamentally transforming human resource management by vastly improving the efficiency, speed, and data processing capabilities of hiring decisions. However, the exact roles of AI-based versus human-based recruitment methods across specific, sequential recruitment stages remain heavily debated and unclear, particularly within the emerging digital landscape of Malaysia. 
-                    </p>
-                    <p>
-                        While AI can support faster and highly systematic recruitment processes by eliminating repetitive tasks and sorting massive datasets, human judgment remains indispensable. Hiring decisions inherently require emotional intelligence, ethical responsibility, cultural contextualization, and an in-depth assessment of candidate fit—qualities machines currently cannot replicate. 
-                    </p>
-                    <p>
-                        This study aims to bridge this gap by investigating and measuring the necessary level of involvement for both AI and human methods across six key recruitment stages: <strong>(1) identifying needs/job analysis, (2) sourcing and attraction, (3) screening and shortlisting, (4) assessment, (5) interview, and (6) induction and onboarding.</strong> Utilizing a quantitative, cross-sectional design underpinned by Sociotechnical Systems (STS) Theory and Human-AI Complementarity, data will be collected from a minimum of 100 HR practitioners and hiring managers across Malaysia. Ultimately, this research provides practical guidance for organizations to systematically allocate AI and human involvement, thereby improving recruitment efficiency, maintaining ethical practices, and fostering candidate trust.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="problem" class="scroll-mt-24">
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div>
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 text-xl">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold text-gray-900">The Problem</h2>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 h-full">
-                        <p class="text-gray-600 leading-relaxed mb-4">
-                            Most existing literature discusses AI recruitment in broad, generalized terms, focusing heavily on theoretical benefits or ethical risks (like algorithmic bias). However, there is a severe lack of operational guidance on <em>how</em> these methods should be integrated into specific, day-to-day recruitment stages.
-                        </p>
-                        <p class="text-gray-600 leading-relaxed">
-                            Without a clear roadmap, Malaysian organizations risk making structural errors: they may overuse AI in stages that critically require human judgment (such as cultural fit interviews), or they may underuse AI in transactional stages where automation could vastly improve efficiency (like resume screening). This imbalance leads to unfair hiring decisions, reduced transparency, and a loss of candidate trust.
-                        </p>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-green-600 text-xl">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold text-gray-900">Objectives & Scope</h2>
-                    </div>
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 h-full">
-                        <h3 class="font-bold text-gray-900 mb-3 border-b pb-2">Research Objectives</h3>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex gap-3 text-gray-600">
-                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                To investigate the role of AI-based recruitment methods across specific recruitment stages in Malaysia.
-                            </li>
-                            <li class="flex gap-3 text-gray-600">
-                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
-                                To investigate the role of human-based recruitment methods across specific recruitment stages in Malaysia.
-                            </li>
+        <div id="view-proposal" class="portal-view block animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                
+                <aside class="lg:col-span-1 space-y-2">
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 sticky top-24 shadow-sm">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-2">Proposal Document Sections</h3>
+                        <ul class="space-y-1">
+                            <li><a href="#metadata" class="block px-3 py-2 text-sm font-medium text-gray-900 rounded-lg hover:bg-gray-100 bg-gray-100 border-l-4 border-indigo-600">Project Metadata</a></li>
+                            <li><a href="#abstract" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">Abstract</a></li>
+                            <li><a href="#intro" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">1.0 Introduction & Background</a></li>
+                            <li><a href="#problem" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">1.2 Problem Statement</a></li>
+                            <li><a href="#objectives" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">1.3 Objectives & Hypotheses</a></li>
+                            <li><a href="#scope" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">1.6 Scope of Study</a></li>
+                            <li><a href="#significance" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">1.7 Significance of Study</a></li>
+                            <li><a href="#ethics" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">1.8 Ethical Considerations</a></li>
+                            <li><a href="#literature" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">2.0 Underpinning Theories</a></li>
+                            <li><a href="#framework" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">2.4 Conceptual Framework</a></li>
+                            <li><a href="#methodology" class="block px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">3.0 Methodology & Analysis</a></li>
                         </ul>
-
-                        <h3 class="font-bold text-gray-900 mb-3 border-b pb-2">Scope of Study</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            The population focuses strictly on individuals currently involved in recruitment and selection activities within Malaysia (HR practitioners, recruiters, hiring managers). The organizations must have their own internal HR department to ensure they manage recruitment directly with structured, systematic stages rather than fully outsourced operations.
-                        </p>
                     </div>
-                </div>
-            </div>
-        </section>
+                </aside>
 
-        <section>
-            <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Proposed Hypotheses Across 6 Stages</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500 border-x border-b border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="text-blue-500 font-bold mb-2">Stage 1: Job Analysis</div>
-                    <p class="text-gray-700 text-sm"><strong>H1:</strong> Human-based recruitment methods have a higher level of involvement than AI-based methods in identifying needs and job analysis.</p>
-                </div>
-                
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500 border-x border-b border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="text-purple-500 font-bold mb-2">Stage 2: Sourcing</div>
-                    <p class="text-gray-700 text-sm"><strong>H2:</strong> AI-based recruitment methods have a higher level of involvement than human-based methods in sourcing and attraction.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500 border-x border-b border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="text-purple-500 font-bold mb-2">Stage 3: Screening</div>
-                    <p class="text-gray-700 text-sm"><strong>H3:</strong> AI-based recruitment methods have a higher level of involvement than human-based methods in screening and shortlisting.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500 border-x border-b border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="text-purple-500 font-bold mb-2">Stage 4: Assessment</div>
-                    <p class="text-gray-700 text-sm"><strong>H4:</strong> AI-based recruitment methods have a higher level of involvement than human-based methods in the assessment stage.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500 border-x border-b border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="text-blue-500 font-bold mb-2">Stage 5: Interview</div>
-                    <p class="text-gray-700 text-sm"><strong>H5:</strong> Human-based recruitment methods have a higher level of involvement than AI-based methods in the interview stage.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500 border-x border-b border-gray-100 hover:shadow-md transition-shadow">
-                    <div class="text-blue-500 font-bold mb-2">Stage 6: Onboarding</div>
-                    <p class="text-gray-700 text-sm"><strong>H6:</strong> Human-based recruitment methods have a higher level of involvement than AI-based methods in induction and onboarding.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="literature" class="scroll-mt-24">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="bg-gray-50 border-b border-gray-100 p-8">
-                    <h2 class="text-3xl font-bold text-gray-900">Literature Review & Conceptual Framework</h2>
-                </div>
-                <div class="p-8">
-                    <div class="grid md:grid-cols-2 gap-12 mb-12">
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <i class="fas fa-project-diagram text-blue-500"></i> Underpinning Theories
-                            </h3>
-                            <div class="space-y-6 text-gray-600">
-                                <div>
-                                    <strong class="text-gray-900 block mb-1">Sociotechnical Systems (STS) Theory</strong>
-                                    <p class="text-sm">Originally developed to study the psychological impacts of mechanization, STS theory posits that technological changes do not happen in isolation. The technical subsystem (algorithms, data) and the social subsystem (human values, culture) must be designed together. In Malaysia, where culture heavily relies on personal chemistry in hiring, AI must be integrated with social systems rather than treated as a standalone fix.</p>
-                                </div>
-                                <div>
-                                    <strong class="text-gray-900 block mb-1">Human-AI Complementarity</strong>
-                                    <p class="text-sm">This theory focuses on achieving Complementary Team Performance (CTP), where humans and AI are functionally different but highly effective when combined based on capability asymmetries. AI excels at rapid pattern detection in large datasets (sourcing/screening), while humans excel at causal interpretation, intuition, and establishing social trust (interviews/onboarding).</p>
+                <div class="lg:col-span-3 space-y-12">
+                    
+                    <section id="metadata" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm relative overflow-hidden">
+                        <div class="absolute right-0 top-0 bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-bl-xl border-l border-b border-gray-200">
+                            Course Code: EIB20503
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight max-w-2xl leading-tight">
+                            Investigating the Role of AI and Human Across Recruitment Stages: A Case Study in Malaysia
+                        </h1>
+                        <p class="text-sm text-indigo-600 font-semibold uppercase tracking-wider mt-3">Business Research Methods Proposal</p>
+                        
+                        <div class="mt-8 border-t border-gray-100 pt-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
+                            <div>
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Research Panelists & Authors (Group 3 - L08)</h4>
+                                <ul class="space-y-1 text-gray-700 font-medium">
+                                    <li class="flex items-center justify-between bg-gray-50 px-3 py-1.5 rounded-lg"><span>Siti Zulaikha Binti Muhammed Fitri</span> <span class="text-xs text-gray-400 font-mono">62215124086</span></li>
+                                    <li class="flex items-center justify-between bg-gray-50 px-3 py-1.5 rounded-lg"><span>Muhammad Izzuddin Hilmi Bin Norzaini</span> <span class="text-xs text-gray-400 font-mono">62115123218</span></li>
+                                    <li class="flex items-center justify-between bg-gray-50 px-3 py-1.5 rounded-lg"><span>Muhammad Syamil Hakimi Bin Azhari</span> <span class="text-xs text-gray-400 font-mono">62215123260</span></li>
+                                    <li class="flex items-center justify-between bg-gray-50 px-3 py-1.5 rounded-lg"><span>Muhammad Rayyan Bin Mohamed Heikal</span> <span class="text-xs text-gray-400 font-mono">62215124558</span></li>
+                                    <li class="flex items-center justify-between bg-gray-50 px-3 py-1.5 rounded-lg"><span>Muhammad Haziq Ismail</span> <span class="text-xs text-gray-400 font-mono">62215124173</span></li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col justify-between">
+                                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4">
+                                    <h5 class="text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">Prepared For</h5>
+                                    <p class="text-gray-900 font-semibold text-base">Sir Md Hidhir Bin Mohamed</p>
+                                    <div class="mt-4 pt-3 border-t border-indigo-100 flex justify-between items-center text-xs text-indigo-700 font-medium">
+                                        <span>Submission Deadline:</span>
+                                        <span class="font-mono bg-white px-2 py-0.5 rounded border border-indigo-200">31 MAY 2026</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <i class="fas fa-layer-group text-blue-500"></i> Variables of Study
-                            </h3>
-                            <ul class="space-y-4">
-                                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                                    <span class="text-xs font-bold uppercase text-gray-500 block mb-1">Independent Variable 1</span>
-                                    <strong class="text-gray-900">Recruitment Methods</strong>
-                                    <p class="text-sm text-gray-600 mt-1">Comparing AI-based systems (machine learning, NLP) against traditional Human-based methods (professional judgment, interaction).</p>
-                                </li>
-                                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                                    <span class="text-xs font-bold uppercase text-gray-500 block mb-1">Independent Variable 2</span>
-                                    <strong class="text-gray-900">The 6 Recruitment Stages</strong>
-                                    <p class="text-sm text-gray-600 mt-1">Job Analysis, Sourcing & Attraction, Screening & Shortlisting, Assessment, Interview, and Induction & Onboarding.</p>
-                                </li>
-                                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100 border-l-4 border-l-blue-500">
-                                    <span class="text-xs font-bold uppercase text-gray-500 block mb-1">Dependent Variable</span>
-                                    <strong class="text-gray-900">Level of Involvement</strong>
-                                    <p class="text-sm text-gray-600 mt-1">The measured extent of participation (from Very Low to Very High) required by either AI or Humans at each specific stage.</p>
-                                </li>
+                    </section>
+
+                    <section id="abstract" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">Abstract</h2>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed text-justify">
+                            Artificial Intelligence (AI) is increasingly transforming recruitment by improving efficiency, speed and data processing in hiring decisions. However, the roles of AI-based and human-based recruitment methods across specific recruitment stages remain unclear, especially in Malaysia where AI adoption in recruitment is still emerging. Although AI can support faster and more systematic recruitment processes, human judgment is still important in hiring decisions that require emotional intelligence, personal understanding and assessment of candidate fit. Most existing literature discusses AI recruitment in general terms, leaving a research gap on how AI and human roles should be integrated across specific recruitment stages.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed text-justify">
+                            Therefore, this study will investigate the roles of AI-based and human-based recruitment methods by measuring their level of involvement across six key recruitment stages in Malaysia: identifying needs or job analysis, sourcing and attraction, screening and shortlisting, assessment, interview and induction and onboarding. This study will use a quantitative, cross-sectional research design underpinned by Sociotechnical Systems (STS) Theory and Human-AI Complementarity. Data will be collected from at least 100 human resource practitioners, recruiters and hiring managers in Malaysia who are currently involved in hiring, recruitment or talent acquisition activities using purposive, convenience and snowball sampling methods. The data will be analysed using IBM SPSS Statistics for demographic analysis, mean comparison analysis and hypothesis testing, while SmartPLS will be used to validate the measurement model. The expected findings will identify which recruitment stages are more suitable for AI-based methods and which stages are more suitable for human-based methods. This study is expected to provide practical guidance for Malaysian organizations to allocate AI and human involvement more systematically while improving recruitment efficiency, ethical practice and candidate trust.
+                        </p>
+                    </section>
+
+                    <section id="intro" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-6">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">1.0 Introduction</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-semibold text-gray-800">1.1 Background of Study</h3>
+                            <p class="text-gray-600 leading-relaxed text-justify">
+                                Artificial intelligence (AI) is becoming more important in recruitment and selection as organizations want to make the hiring process faster, more proper and more efficient. Technology strongly influences parts of the recruitment life cycle, including attraction, screening, selection and onboarding. Therefore, this study focuses on AI-based and human-based recruitment methods and recruitment stages as the independent variables, while the dependent variable is the level of AI and human involvement across recruitment stages.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed text-justify">
+                                AI-based recruitment methods can help organizations manage recruitment activity more efficiently. Recruiters value efficiency, time saving and automation as some of the main benefits of using AI in recruitment. AI can improve recruitment quality, increase efficiency and reduce repetitive work. This shows that AI may be useful in recruitment stages that involve large amount of applicant data, repetitive tasks and faster processing. However, AI-based recruitment methods also have weakness and limitations. AI recruitment systems may produce unfair results if the data or system design contains bias. Algorithmic bias in AI-enabled recruitment can lead to discriminatory hiring practices based on gender, race, colour and personality traits. AI recruitment creates ethical concerns because AI tools are used in important hiring decisions, such as writing job advertisements, screening resumes and analysing video interviews.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed text-justify">
+                                Human-based recruitment methods remain important because recruitment decision do not only depend on technical matching or automated screening. Lack of human judgement is one of the main disadvantages of AI use in recruitment. AI support in later selection stages, such as telephone or online interview, may reduce candidate's opportunity to perform well and increase feeling of discomfort. At the same time, human recruiters may be influence by personal judgement, preference, unconscious bias, or subjective impressions during the recruitment process. Collaboration between recruiters and AI is important because traditional recruitment methods may involve human prejudice, while AI can help improve recruitment efficiency and support decision making. However, AI should not fully replace recruiters because recruitment decisions still involve human values and ethical responsibility.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="problem" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">1.2 Problem Statement</h2>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed text-justify">
+                            Even though AI is increasingly use in recruitment and selection, the level of AI and human involvement across different recruitment stages remains unclear. The problem is that both AI-based and human-based recruitment methods have strength and weakness, but existing studies still do not clearly explain how both methods should be applied across specific recruitment stages. Most previous studies discuss AI recruitment and human recruitment in a general way by focusing on their benefits, risks and ethical concerns. However, existing studies have provided limited explanation of how AI-based and human-based recruitment methods should be applied across specific recruitment stages, especially in determining which stages require higher AI involvement, higher human judgement or a combination of both.
+                        </p>
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 text-sm text-amber-900 space-y-2">
+                            <span class="font-bold block text-amber-800">Critical Structural Operational Gap:</span>
+                            Without clear operational allocation matrices, organizations frequently face the twin dangers of algorithmic overuse in highly high-touch human interaction nodes (such as interviews and onboarding) leading to severe ethical breakdown and decreased candidate compliance, or extreme tech-underuse in data-heavy administrative nodes (such as high-volume screening and shortlisting) leading to massive corporate inefficiency.
+                        </div>
+                    </section>
+
+                    <section id="objectives" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-6">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">1.3 Objectives, Questions & Hypotheses</h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                                <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Research Objectives (RO)</h4>
+                                <ul class="space-y-2 text-sm text-gray-600">
+                                    <li class="flex items-start space-x-2">
+                                        <span class="bg-indigo-100 text-indigo-700 font-bold px-1.5 py-0.5 rounded text-xs mt-0.5">RO1</span>
+                                        <span>To investigate the role of AI-based recruitment methods across recruitment stages in Malaysia.</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <span class="bg-indigo-100 text-indigo-700 font-bold px-1.5 py-0.5 rounded text-xs mt-0.5">RO2</span>
+                                        <span>To investigate the role of human-based recruitment methods across recruitment stages in Malaysia.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                                <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Research Questions (RQ)</h4>
+                                <ul class="space-y-2 text-sm text-gray-600">
+                                    <li class="flex items-start space-x-2">
+                                        <span class="bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded text-xs mt-0.5">RQ1</span>
+                                        <span>Which recruitment stages are more suitable for AI-based recruitment methods in Malaysia?</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <span class="bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded text-xs mt-0.5">RQ2</span>
+                                        <span>Which recruitment stages are more suitable for human-based recruitment methods in Malaysia?</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Formulated Hypotheses (H1 - H6 Evaluation Metrics)</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                                <div class="p-3 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold flex items-center justify-center shrink-0">H1</div>
+                                    <p class="text-xs text-gray-600"><span class="font-semibold text-gray-900">Job Analysis:</span> Human-based methods have higher involvement than AI-based methods.</p>
+                                </div>
+                                <div class="p-3 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold flex items-center justify-center shrink-0">H2</div>
+                                    <p class="text-xs text-gray-600"><span class="font-semibold text-gray-900">Sourcing/Attraction:</span> AI-based methods have higher involvement than human methods.</p>
+                                </div>
+                                <div class="p-3 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold flex items-center justify-center shrink-0">H3</div>
+                                    <p class="text-xs text-gray-600"><span class="font-semibold text-gray-900">Screening/Shortlisting:</span> AI-based methods have higher involvement than human methods.</p>
+                                </div>
+                                <div class="p-3 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold flex items-center justify-center shrink-0">H4</div>
+                                    <p class="text-xs text-gray-600"><span class="font-semibold text-gray-900">Assessment Stage:</span> AI-based methods have higher involvement than human methods.</p>
+                                </div>
+                                <div class="p-3 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold flex items-center justify-center shrink-0">H5</div>
+                                    <p class="text-xs text-gray-600"><span class="font-semibold text-gray-900">Interview Stage:</span> Human-based methods have higher involvement than AI-based methods.</p>
+                                </div>
+                                <div class="p-3 border border-gray-100 rounded-xl bg-white shadow-sm flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold flex items-center justify-center shrink-0">H6</div>
+                                    <p class="text-xs text-gray-600"><span class="font-semibold text-gray-900">Onboarding/Induction:</span> Human-based methods have higher involvement than AI-based methods.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="scope" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">1.6 Scope of Study</h2>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+                            The scope of this study focuses on the role of AI-based recruitment methods and human-based recruitment methods across recruitment stages in Malaysia. This study investigates the level of AI and human involvement in six recruitment stages, which are identifying needs or job analysis, sourcing and attraction, screening and shortlisting, assessment, interview and induction and onboarding. These six recruitment stages are relevant to this study because they represent the main flow of recruitment activities in Malaysia, beginning from identifying job needs until the final stage of onboarding new employees.
+                        </p>
+                        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+                            Moreover, this study only focuses on identifying which recruitment stages are more suitable for AI-based recruitment methods or human-based recruitment methods and does not examine the specific AI tools, software platforms, or detailed data infrastructure architectures used. This restriction establishes an initial guide for corporate resource allocation rather than a purely technical programming manual. The target population consists exclusively of Malaysian corporate organizational practitioners operating inside an established, structured internal Human Resources Department. Fully outsourced HR frameworks are excluded since they lack direct operational management mapping oversight.
+                        </p>
+                    </section>
+
+                    <section id="significance" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">1.7 Significance of Study</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div class="p-4 border border-gray-200 rounded-xl bg-gray-50">
+                                <h4 class="font-bold text-gray-900 mb-2">Theoretical Level</h4>
+                                <p class="text-gray-600 text-xs">Pushes the boundaries of automated Human Resource Management scholarship by offering explicit micro-level functional criteria mapping to reconcile systemic operational inefficiencies under the Human-AI Complementarity framework.</p>
+                            </div>
+                            <div class="p-4 border border-gray-200 rounded-xl bg-gray-50">
+                                <h4 class="font-bold text-gray-900 mb-2">Practical Level</h4>
+                                <p class="text-gray-600 text-xs">Provides local corporate decision-makers in Malaysia clear direction on where to deploy predictive machine models safely without causing algorithmic bias, loss of candidate trust, or corporate litigation.</p>
+                            </div>
+                            <div class="p-4 border border-gray-200 rounded-xl bg-gray-50">
+                                <h4 class="font-bold text-gray-900 mb-2">Future Research</h4>
+                                <p class="text-gray-600 text-xs">Establishes a rigorous stage-based empirical metric baseline for upcoming localized researchers exploring technological infrastructure upgrades across South East Asian labor markets.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="ethics" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">1.8 Ethical Considerations</h2>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+                            This study will be conducted in an ethical manner to protect the rights and privacy of the respondents. The first ethical consideration is informed consent and voluntary participation. In the questionnaire, Section A requires respondents to indicate whether they agree to participate in the study before answering the remaining questions. Respondents who do not agree to participate will be directed to the end of the questionnaire immediately.
+                        </p>
+                        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+                            Confidentiality and anonymity are protected by entirely excluding tracking variables (e.g., matching name, exact physical home address, or telephone logs). Sensitive, non-functional personal data like religious beliefs, race, or health conditions are omitted to prevent unconscious bias. Crucially, a multilingual survey system containing precise item-by-item translations in both English and Bahasa Malaysia is deployed. This structural inclusion completely removes English-language conversational barriers, preventing respondent discomfort while preventing systemic exclusion within Malaysia's diverse labor ecosystem.
+                        </p>
+                    </section>
+
+                    <section id="literature" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-6">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">2.0 Literature Review & Underpinning Theories</h2>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="border border-indigo-100 rounded-xl p-5 bg-gradient-to-r from-indigo-50 to-white">
+                                <h4 class="font-bold text-indigo-900 text-base mb-2">Sociotechnical Systems (STS) Theory</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed text-justify">
+                                    Originating from Trist and Bamforth’s (1951) classical studies, STS theory demonstrates that macro-organizational structural performance succeeds only when the social subsystem (human behavior, values, organizational culture) and the technical subsystem (algorithmic assets, database tools, computing systems) are optimally balanced. In this study, AI deployment across Malaysian firms cannot be viewed merely as a cold software upgrade; it is a sociotechnical shift that must respect local recruiter values and cultural nuances.
+                                </p>
+                            </div>
+                            
+                            <div class="border border-blue-100 rounded-xl p-5 bg-gradient-to-r from-blue-50 to-white">
+                                <h4 class="font-bold text-blue-900 text-base mb-2">Human-AI Complementarity Theory</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed text-justify">
+                                    This theory evaluates systems based on specific capability asymmetries. It establishes that computational engines excel at high-volume data ingestion, mathematical pattern matching, and rapid automated filtering. Conversely, human agents retain complete cognitive dominance over complex contextual reasoning, ethical oversight, soft communication, and assessing cultural organizational fit.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="framework" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-4">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">2.4 Conceptual Framework Diagram</h2>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-6">A structural model visualizing the operational flow across independent variables toward establishing optimization involvement levels:</p>
+                        
+                        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6">
+                            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                                
+                                <div class="w-full md:w-1/3 bg-white border border-gray-200 rounded-xl p-4 shadow-sm text-center">
+                                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-2">Independent Variables</span>
+                                    <div class="space-y-2 text-xs font-semibold">
+                                        <div class="bg-indigo-50 text-indigo-700 p-2 rounded-lg border border-indigo-100">IV1: AI-Based Methods</div>
+                                        <div class="bg-purple-50 text-purple-700 p-2 rounded-lg border border-purple-100">IV2: Human-Based Methods</div>
+                                    </div>
+                                </div>
+
+                                <div class="text-gray-400 font-bold hidden md:block text-2xl">➔</div>
+                                <div class="text-gray-400 font-bold md:hidden text-xl">▼</div>
+
+                                <div class="w-full md:w-1/3 bg-white border border-gray-200 rounded-xl p-4 shadow-sm text-center border-dashed border-2 border-indigo-300">
+                                    <span class="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-2">Comparison Context</span>
+                                    <span class="text-xs font-bold text-gray-800 bg-gray-100 px-3 py-1.5 rounded-full block">6 Core Recruitment Lifecycle Stages</span>
+                                    <span class="text-[10px] text-gray-400 block mt-2">(Job Analysis ➔ Sourcing ➔ Screening ➔ Assessment ➔ Interview ➔ Onboarding)</span>
+                                </div>
+
+                                <div class="text-gray-400 font-bold hidden md:block text-2xl">➔</div>
+                                <div class="text-gray-400 font-bold md:hidden text-xl">▼</div>
+
+                                <div class="w-full md:w-1/3 bg-indigo-600 text-white rounded-xl p-4 shadow-md text-center">
+                                    <span class="text-xs font-bold text-indigo-200 uppercase tracking-widest block mb-1">Dependent Variable</span>
+                                    <p class="text-xs font-bold leading-tight">Level of AI & Human Involvement Metric Scores</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="methodology" class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-6">
+                        <div class="flex items-center space-x-2 pb-2 border-b border-gray-100">
+                            <div class="h-6 w-1 bg-indigo-600 rounded"></div>
+                            <h2 class="text-xl font-bold text-gray-900">3.0 Research Methodology</h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-gray-900">3.1 Research Design & Sampling</h4>
+                                <p class="text-gray-600 text-xs text-justify">
+                                    This study uses a quantitative, cross-sectional, comparative research design. Perceptions and actual behavior metrics will be collected from a targeted sample sizing minimum of 100 authenticated Human Resource practitioners, recruitment leads, and line hiring executives working across corporate Malaysia. 
+                                </p>
+                                <p class="text-gray-600 text-xs text-justify">
+                                    To manage localized corporate settings, a hybrid blend of purposive, convenience, and referral snowball sampling methods is engaged to successfully penetrate highly locked corporate HR networks.
+                                </p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-gray-900">3.3 Measurement Scaling Model</h4>
+                                <p class="text-gray-600 text-xs text-justify">
+                                    The physical research tool consists of five key sections (Consent, Screening, Demographics, Actual Metrics, and Recommended Metrics). Sections D and E employ a custom, balanced 5-point Likert Scale model ranging from <span class="font-mono bg-gray-100 px-1 rounded">1 = Very Low/No Involvement</span> up to <span class="font-mono bg-gray-100 px-1 rounded">5 = Very High Involvement</span>. 
+                                </p>
+                                <p class="text-gray-600 text-xs text-justify">
+                                    Rather than treating variables in isolation, the items are presented in a structural paired setup to gather immediate relational data between the target methods.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-3">Planned Analytical Architecture Tools</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start space-x-3">
+                                    <div class="p-2 bg-indigo-600 text-white rounded-lg font-bold font-mono text-xs">SPSS</div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-gray-900">IBM SPSS Statistics Suite</h5>
+                                        <p class="text-[11px] text-gray-500 mt-1">Utilized to calculate demographic frequencies, standard deviations, internal consistency scores (Cronbach's Alpha), and mean differences to evaluate hypotheses H1-H6.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start space-x-3">
+                                    <div class="p-2 bg-purple-600 text-white rounded-lg font-bold font-mono text-xs">PLS</div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-gray-900">SmartPLS Software Engine</h5>
+                                        <p class="text-[11px] text-gray-500 mt-1">Engaged to analyze the measurement model, performing structural composite mapping to guarantee latent item indicator validation and discriminant validity.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="view-poster" class="portal-view hidden animate-fade-in">
+            <div class="bg-slate-800 text-white rounded-3xl p-6 sm:p-12 shadow-2xl max-w-4xl mx-auto border-4 border-slate-700 relative">
+                
+                <div class="text-center border-b-2 border-slate-600 pb-6">
+                    <span class="bg-indigo-500 text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest">UniKL Business School Academic Exhibition</span>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight mt-2 text-indigo-300">INVESTIGATING THE ROLE OF AI AND HUMAN ACROSS RECRUITMENT STAGES</h1>
+                    <p class="text-sm text-slate-400 mt-1 italic">Contextual Case Framework Study inside Malaysia</p>
+                    
+                    <div class="mt-4 flex flex-wrap justify-center gap-3 text-xs text-slate-300">
+                        <span class="bg-slate-700 px-2 py-1 rounded">Group 3 (L08)</span>
+                        <span class="bg-slate-700 px-2 py-1 rounded">Supervisor: Sir Md Hidhir</span>
+                        <span class="bg-slate-700 px-2 py-1 rounded">Course: EIB20503</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 text-xs text-slate-300">
+                    
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-indigo-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Introduction</h3>
+                            <p class="leading-relaxed text-justify">AI adoption is rapidly accelerating across international workforce frameworks. However, corporate practitioners face operational ambiguity regarding allocation parameters across individual lifecycle nodes.</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-indigo-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Problem Statement</h3>
+                            <p class="leading-relaxed text-justify">Both computational engines and human recruiters feature structural biases. Current models fail to establish precise stage-by-stage functional matrices, risking either tech-overuse or structural resource inefficiency.</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-indigo-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Objectives</h3>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li>Investigate AI-based method suitability across lifecycle nodes.</li>
+                                <li>Map human cognitive boundaries across selection filters.</li>
                             </ul>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-indigo-950/40 p-4 rounded-xl border border-indigo-800/60">
+                            <h3 class="font-bold text-indigo-300 uppercase tracking-wider mb-2 border-b border-indigo-900 pb-1">Conceptual Framework</h3>
+                            <div class="space-y-2 font-mono text-[10px] text-center">
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700 text-indigo-300">IV1: AI Recruitment Method</div>
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700 text-purple-300">IV2: Human Recruitment Method</div>
+                                <div class="text-slate-500 my-1">▼ Evaluated Across ▼</div>
+                                <div class="bg-indigo-900/80 p-1.5 rounded font-sans font-bold text-white">6 Lifecycle Stages Context</div>
+                                <div class="text-slate-500 my-1">▼ Resulting In ▼</div>
+                                <div class="bg-emerald-900 text-emerald-200 p-1 rounded">DV: Local Involvement Metric Scores</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-indigo-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Hypotheses (H1-H6)</h3>
+                            <div class="space-y-1 text-[11px]">
+                                <div><span class="text-amber-400 font-bold">H1 Job Analysis:</span> Human > AI</div>
+                                <div><span class="text-emerald-400 font-bold">H2 Sourcing:</span> AI > Human</div>
+                                <div><span class="text-emerald-400 font-bold">H3 Screening:</span> AI > Human</div>
+                                <div><span class="text-emerald-400 font-bold">H4 Assessment:</span> AI > Human</div>
+                                <div><span class="text-amber-400 font-bold">H5 Interview:</span> Human > AI</div>
+                                <div><span class="text-amber-400 font-bold">H6 Onboarding:</span> Human > AI</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-indigo-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Methodology</h3>
+                            <ul class="space-y-1.5">
+                                <li><strong class="text-white">Design:</strong> Quantitative, Cross-Sectional</li>
+                                <li><strong class="text-white">Sample:</strong> N=100+ Local HR Experts</li>
+                                <li><strong class="text-white">Sampling:</strong> Purposive & Snowball</li>
+                                <li><strong class="text-white">Scale:</strong> 5-Point Paired Involvement Scale</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-indigo-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Analysis Suite</h3>
+                            <p class="leading-relaxed mb-2 text-justify">Dual-software structural analytics configuration approach:</p>
+                            <div class="grid grid-cols-2 gap-1.5 text-center text-[10px] font-bold">
+                                <div class="bg-slate-800 p-1.5 rounded border border-slate-700 text-blue-400">SPSS (Hypotheses)</div>
+                                <div class="bg-slate-800 p-1.5 rounded border border-slate-700 text-purple-400">SmartPLS (Validation)</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
+                            <h3 class="font-bold text-emerald-400 uppercase tracking-wider mb-2 border-b border-slate-700 pb-1">Expected Significance</h3>
+                            <p class="text-slate-400 leading-relaxed text-justify text-[11px]">Establishes foundational operational balance guidelines maximizing speed outputs while maintaining data compliance security, transparency parameters, and high candidate retention rates.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="view-flyer" class="portal-view hidden animate-fade-in">
+            <div class="max-w-md mx-auto bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-xl shadow-indigo-100/40">
+                <div class="bg-gradient-to-br from-indigo-600 to-blue-700 text-white p-6 text-center">
+                    <span class="text-xs font-bold tracking-widest bg-indigo-500/40 px-3 py-1 rounded-full uppercase">Project Promotional Flyer</span>
+                    <h2 class="text-xl font-black mt-2 leading-tight">Human-AI Complementarity in Modern Recruitment</h2>
+                    <p class="text-xs text-indigo-100 mt-1">Driving Efficiency While Preserving Human Dignity</p>
+                </div>
+                
+                <div class="p-6 space-y-5 text-xs text-gray-600">
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-sm mb-1">Theme & Focus</h4>
+                        <p class="leading-relaxed">Solving the operational division of labor problem during candidate selection inside emerging South East Asian markets.</p>
+                    </div>
+
+                    <div class="border-l-4 border-indigo-500 pl-3 bg-indigo-50/50 py-2 pr-2 rounded-r-lg">
+                        <h4 class="font-bold text-gray-900 text-xs mb-0.5">Core Variables</h4>
+                        <p class="text-[11px]">Independent: AI-Based Methods & Human-Based Methods across 6 distinct lifecycle nodes. Dependent: Involvement Score Matrices.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-sm mb-2">The 6 Lifecycle Stages Examined</h4>
+                        <div class="grid grid-cols-2 gap-2 text-center text-[11px] font-medium text-gray-700">
+                            <div class="bg-gray-100 p-2 rounded-lg">1. Job Analysis</div>
+                            <div class="bg-gray-100 p-2 rounded-lg">2. Candidate Sourcing</div>
+                            <div class="bg-gray-100 p-2 rounded-lg">3. CV Screening</div>
+                            <div class="bg-gray-100 p-2 rounded-lg">4. Competency Assess</div>
+                            <div class="bg-gray-100 p-2 rounded-lg">5. Selection Interview</div>
+                            <div class="bg-gray-100 p-2 rounded-lg">6. Worker Onboarding</div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-400 block uppercase font-bold">Research Group</span>
+                            <span class="text-gray-900 font-bold">UniKL Business School</span>
+                        </div>
+                        <div class="bg-indigo-600 text-white font-mono text-[10px] font-bold px-2.5 py-1 rounded-lg">
+                            Group 3 Exhibition Panel
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section id="methodology" class="scroll-mt-24">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center text-yellow-600 text-xl">
-                    <i class="fas fa-microscope"></i>
-                </div>
-                <h2 class="text-3xl font-bold text-gray-900">Research Methodology</h2>
-            </div>
-            
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <div class="text-blue-600 text-2xl mb-4"><i class="fas fa-drafting-compass"></i></div>
-                    <h3 class="font-bold text-gray-900 mb-2">Research Design</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Quantitative, cross-sectional design testing comparison-based hypotheses. Data is collected at a single point in time to capture current organizational practices efficiently.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <div class="text-blue-600 text-2xl mb-4"><i class="fas fa-users"></i></div>
-                    <h3 class="font-bold text-gray-900 mb-2">Population & Sampling</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Minimum 100 HR practitioners and hiring managers in Malaysia. Utilizing non-probability techniques: purposive, convenience, and snowball sampling via LinkedIn and email.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <div class="text-blue-600 text-2xl mb-4"><i class="fas fa-clipboard-list"></i></div>
-                    <h3 class="font-bold text-gray-900 mb-2">Measurement</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Self-administered online questionnaire utilizing a 5-point involvement scale ranging from (1) Very Low Involvement to (5) Very High Involvement.</p>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <div class="text-blue-600 text-2xl mb-4"><i class="fas fa-chart-pie"></i></div>
-                    <h3 class="font-bold text-gray-900 mb-2">Data Analysis</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">IBM SPSS Statistics for demographic analysis, reliability, and mean comparisons. SmartPLS will be deployed for rigorous measurement model validation via PLS-SEM.</p>
-                </div>
-            </div>
-        </section>
+        </div>
 
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8 mb-8 border-b border-gray-800 pb-8">
-                <div class="md:col-span-2">
-                    <h3 class="text-white text-lg font-bold mb-4">Universiti Kuala Lumpur</h3>
-                    <p class="text-sm leading-relaxed max-w-sm">
-                        This website serves as the digital exhibition for the EIB20503 Business Research Methods research proposal. It outlines the integration of AI and human strategies in Malaysian recruitment processes.
-                    </p>
-                </div>
-                
-                <div>
-                    <h3 class="text-white font-bold mb-4">Research Team</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li>Siti Zulaikha Binti Muhammed Fitri</li>
-                        <li>Muhammad Izzuddin Hilmi</li>
-                        <li>Muhammad Syamil Hakimi</li>
-                        <li>Muhammad Rayyan</li>
-                        <li>Muhammad Haziq Ismail</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-white font-bold mb-4">Course Info</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><strong>Subject:</strong> EIB20503 Business Research Methods</li>
-                        <li><strong>Group:</strong> Group 3 (L08)</li>
-                        <li><strong>Lecturer:</strong> Sir Md Hidhir Bin Mohamed</li>
-                        <li><strong>Submission:</strong> 31 May 2026</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="text-center text-sm">
-                <p>&copy; 2026 Group 3 (L08). All rights reserved for academic purposes.</p>
-            </div>
-        </div>
+    <footer class="bg-white border-t border-gray-200 mt-12 py-6 text-center text-xs text-gray-400">
+        <p>© 2026 Universiti Kuala Lumpur Business School. Prepared for academic evaluation under course EIB20503.</p>
     </footer>
 
-    <script>
-        function handleSignIn() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const signInBtn = document.getElementById('signInBtn');
+    <div id="loginModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-sm mx-4 rounded-2xl p-6 shadow-2xl relative border border-gray-100 transform scale-95 transition-transform duration-300" id="modalCard">
             
-            // Show loading screen
-            loadingScreen.classList.remove('hidden');
-            loadingScreen.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            <button onclick="closeModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
 
-            // Simulate network request (2 seconds)
+            <div id="authFormWrapper" class="block">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mx-auto text-indigo-600 mb-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900">Secure Panel Access</h3>
+                    <p class="text-xs text-gray-500 mt-1">Enter any email & password combination to view authorized dashboard controls.</p>
+                </div>
+
+                <form onsubmit="executeAuthFlow(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Email Address</label>
+                        <input type="email" required placeholder="yourname@unikl.edu.my" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Password</label>
+                        <input type="password" required placeholder="••••••••" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-sm">
+                        Authenticate Account
+                    </button>
+                </form>
+            </div>
+
+            <div id="authLoadingWrapper" class="hidden text-center py-8 space-y-4">
+                <div class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <div class="space-y-1">
+                    <p id="loadingStageMessage" class="text-sm font-semibold text-gray-900">Connecting to secure database...</p>
+                    <p class="text-xs text-indigo-500 font-mono tracking-widest uppercase">UniKL SecureAuth v2.4</p>
+                </div>
+            </div>
+
+            <div id="authSuccessWrapper" class="hidden text-center py-6 space-y-4">
+                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-bold shadow-inner">
+                    ✓
+                </div>
+                <div class="space-y-1">
+                    <h4 class="text-lg font-bold text-gray-900">Access Approved</h4>
+                    <p class="text-xs text-emerald-600 font-medium">Session initialized successfully for Research Panel Evaluation.</p>
+                </div>
+                <button onclick="closeModal()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-lg transition tracking-wider uppercase">
+                    Enter Dashboard
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Tab switching controller
+        function switchView(viewId) {
+            // Hide all views
+            document.querySelectorAll('.portal-view').forEach(view => view.classList.add('hidden'));
+            
+            // Show active view
+            document.getElementById('view-' + viewId).classList.remove('hidden');
+
+            // Reset navigation menu styling buttons
+            document.querySelectorAll('.view-tab').forEach(tab => {
+                tab.classList.remove('active-tab', 'text-gray-900', 'bg-gray-100');
+                tab.classList.add('text-gray-500');
+            });
+
+            // Set chosen navigation button active state
+            const targetBtn = document.getElementById('btn-' + viewId);
+            if(targetBtn) {
+                targetBtn.classList.add('active-tab');
+            }
+
+            // Sync mobile tabs active states
+            document.querySelectorAll('.view-tab-mobile').forEach(mTab => {
+                mTab.classList.remove('text-indigo-600', 'bg-indigo-50', 'text-gray-600');
+                if(mTab.innerText.toLowerCase().includes(viewId.substring(0,3))) {
+                    mTab.classList.add('text-indigo-600', 'bg-indigo-50');
+                } else {
+                    mTab.classList.add('text-gray-600');
+                }
+            });
+        }
+
+        // Modal Open/Close Controls
+        function openModal() {
+            const modal = document.getElementById('loginModal');
+            const card = document.getElementById('modalCard');
+            modal.classList.remove('hidden');
             setTimeout(() => {
-                // Hide loading screen
-                loadingScreen.classList.add('hidden');
-                loadingScreen.classList.remove('flex');
-                document.body.style.overflow = 'auto';
+                modal.classList.remove('opacity-0');
+                card.classList.remove('scale-95');
+            }, 10);
+        }
 
-                // Change button state to authenticated
-                signInBtn.innerHTML = '<i class="fas fa-check-circle"></i> Authenticated';
-                signInBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                signInBtn.classList.add('bg-green-600', 'hover:bg-green-700');
-                signInBtn.disabled = true;
-                
-            }, 2000);
+        function closeModal() {
+            const modal = document.getElementById('loginModal');
+            const card = document.getElementById('modalCard');
+            modal.classList.add('opacity-0');
+            card.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Interactive Auth Processing Sequence Simulation
+        function executeAuthFlow(e) {
+            e.preventDefault(); // Stop page reload
+
+            // Hide Form input layer, reveal loading spinner card
+            document.getElementById('authFormWrapper').classList.replace('block', 'hidden');
+            document.getElementById('authLoadingWrapper').classList.replace('hidden', 'block');
+
+            const loadingMsgText = document.getElementById('loadingStageMessage');
+
+            // Step-by-Step System Status Message updates
+            setTimeout(() => {
+                loadingMsgText.innerText = "Validating academic credentials...";
+            }, 800);
+
+            setTimeout(() => {
+                loadingMsgText.innerText = "Verifying supervisor authorization tokens...";
+            }, 1600);
+
+            // Complete simulation, transition into Success state node
+            setTimeout(() => {
+                document.getElementById('authLoadingWrapper').classList.replace('block', 'hidden');
+                document.getElementById('authSuccessWrapper').classList.replace('hidden', 'block');
+
+                // Update the upper right header button status to reflect authenticated active session
+                document.getElementById('authZone').innerHTML = `
+                    <div class="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Session: Approved</span>
+                    </div>
+                `;
+            }, 2400);
         }
     </script>
 </body>
